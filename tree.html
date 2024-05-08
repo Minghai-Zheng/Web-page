@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试树形菜单</title>
+    <link rel="stylesheet" href="./css/font-awesome.min.css">
+    <style>
+        /* 清屏 */
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        li{
+            /* 去掉列表项中的小点 */
+            list-style: none;
+            position: relative;
+            padding-left: 10px;
+            width: 189px;
+            /* height: 40px; */
+            border: 1px solid #e5e5e5;
+            /* border-color: aqua; */
+            border-style: none none solid none;/*如果某一边没有设置，则使用对面的样式*/
+
+
+        }
+        /* 去掉超链接的下划线 */
+        li>a{
+            text-decoration: none;
+            color: #585858;
+            display: block;
+            line-height: 40px;
+        }
+        .sub li:last-child{
+            border: none;
+        }
+        span{
+            display: inline-block;
+            margin-left: 10px;
+        }
+        .sub{
+            position: relative;
+            padding-left: 7px;
+        }
+        .subHide{
+            display:none;
+        }
+        .subShow{
+            display:block;
+        }
+        .sub>li{
+            position:relative;
+            padding-left:10px;
+            border-style: none none dotted none;
+        }
+        .po{
+            position:relative;
+            top: 2px;
+
+        }
+        /* .sub{
+            display: none;
+        }
+        /* 二级菜单显示 hover:鼠标悬停*/
+        /* .parent>li>a:hover +ul{
+            display: inline;
+        } */ 
+        .sub> li:before {
+            content: "";
+            display: block;
+            width: 7px;
+            position: absolute;
+            z-index: 1;
+            left: 0px;
+            top: 17px;
+            border: 1px dotted;
+            border-width: 1px 0 0;
+    }
+        .sub:before {
+            content: "";
+            display: block;
+            position: absolute;
+            z-index: 1;
+            left: 5px;
+            top: 0;
+            bottom: 0;
+            border: 1px dotted;
+            border-width: 0 0 0 1px;
+    }
+
+    </style>
+</head>
+<body>
+    <!-- 加class区分开父菜单和子菜单（两个ul） -->
+    <ul id="parentMenu"class="parent">
+        <li>
+            <a href="#"><i class="fa fa-home po"></i><span>首页</span></a>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-user po"></i><span>账号管理</span></a>
+            <ul class="sub subHide">
+                <li><a href="#">基本资料</a></li>
+                <li><a href="#">密码修改</a></li>
+                <li><a href="#">绑定手机</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#"><i class="fa fa-user po"></i><span>消息中心</span></a>
+            <!-- class可以有多个值 -->
+            <ul class="sub subHide">
+                <li><a href="#">全部信息</a></li>
+            </ul>
+        </li>
+        <!-- <li>订单管理</li>
+        <li>发票管理</li>
+        <li>使用记录</li> -->
+    </ul>
+
+    <script>
+        
+        console.log(document.getElementById("parentMenu").childNodes.length);
+        //时间委托机制，把点击时间委托给子元素
+        document.getElementById("parentMenu").childNodes.forEach(node=>{
+            console.log("节点：",node.nodeName,node.nodeType);
+            if(node.nodeName=="LI")
+        {
+            node.firstChild.nextSibling.onclick=function(){
+                node.childNodes.forEach(subNode=>
+                    {
+                        // console.log("节点：",subNode.nodeName,subNode.nodeType);
+                        if(subNode.nodeName=="UL")
+                        {
+                            //通过代码改变ul的class的值
+
+                            if(subNode.className.includes("Hide"))
+                            {
+                                subNode.className="sub subShow";
+                            }
+                            else{
+                                subNode.className="sub subHide";
+                            }
+                            /*
+                            如果当前菜单是折叠的（特点：className包含Hide），则展开 
+                            如果当前菜单是展开的（特点：），则折叠
+                            */
+                        }
+                        
+                    }
+                )
+            }
+        }
+        })
+
+    </script>
+</body>
+</html>
